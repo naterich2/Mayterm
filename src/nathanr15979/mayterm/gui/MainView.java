@@ -18,6 +18,7 @@ public class MainView extends JFrame implements Runnable {
     private InputPanel inputPanel;
     private GraphPanel graphPanel;
     private ShellGroup sg;
+    private RadialPanel rp;
     
     @Override
     public void run(){
@@ -27,12 +28,14 @@ public class MainView extends JFrame implements Runnable {
     
     public MainView(){
         sg = new ShellGroup();
-        inputPanel = new InputPanel(sg);
+        rp = new RadialPanel();
+        inputPanel = new InputPanel(sg, rp);
         graphPanel = new GraphPanel();
         this.setLayout(new BorderLayout());
-        add(graphPanel, BorderLayout.CENTER);
+        //add(graphPanel, BorderLayout.CENTER);
         add(inputPanel, BorderLayout.SOUTH);
-        this.setResizable(false);
+        add(rp, BorderLayout.CENTER);
+        //this.setResizable(false);
         
     }
 }

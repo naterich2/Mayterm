@@ -1,11 +1,13 @@
 package nathanr15979.mayterm.gui;
 
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+
 
 import nathanr15979.mayterm.control.ShellGroup;
 
@@ -13,27 +15,29 @@ import nathanr15979.mayterm.control.ShellGroup;
  *
  * @author nathan richman
  */
-public class InputPanel extends JPanel {
+public class InputPanel extends JPanel implements ItemListener {
     public JCheckBox [] checkBoxes;
     public static final int [] ORBITALS = {ShellGroup.S,ShellGroup.P1,ShellGroup.P2,ShellGroup.P3,
                                            ShellGroup.D1,ShellGroup.D2,ShellGroup.D3,ShellGroup.D4, ShellGroup.D5};
-    private ShellGroup sg;
-    private JPanel s;
-    private JPanel p;
-    private JPanel d;
-    private JLabel sl;
-    private JLabel pl;
-    private JLabel dl;
-    private JPanel shellPanel;
-    private JPanel n;
-    private JCheckBox n1;
-    private JCheckBox n2;
-    private JCheckBox n3;
-    private JLabel nLabel;
+    private final ShellGroup sg;
+    private final RadialPanel rp;
+    private final JPanel s;
+    private final JPanel p;
+    private final JPanel d;
+    private final JLabel sl;
+    private final JLabel pl;
+    private final JLabel dl;
+    private final JPanel shellPanel;
+    private final JPanel n;
+    public final JCheckBox n1;
+    public final JCheckBox n2;
+    public final JCheckBox n3;
+    private final JLabel nLabel;
     
-    public InputPanel(ShellGroup sg){
+    public InputPanel(ShellGroup sg, RadialPanel radial){
         super();
         this.sg = sg;
+        rp = radial;
         this.setLayout(new FlowLayout());
         shellPanel = new JPanel();
         shellPanel.setLayout(new GridLayout(3,1));
@@ -44,7 +48,7 @@ public class InputPanel extends JPanel {
         for(int i = 0; i<orbitalOrientations.length; i++){
             checkBoxes[i] = new JCheckBox();
             checkBoxes[i].setToolTipText("Turn on "+orbitalOrientations[i]+" orbital");
-            checkBoxes[i].addItemListener(new ButtonListener(this,sg)); 
+            checkBoxes[i].addItemListener(this); 
         } 
         s = new JPanel(new FlowLayout(FlowLayout.LEADING));
         p = new JPanel(new FlowLayout(FlowLayout.LEADING));
@@ -73,6 +77,9 @@ public class InputPanel extends JPanel {
         n1 = new JCheckBox("1: ");
         n2 = new JCheckBox("2: ");
         n3 = new JCheckBox("3: ");
+        n1.addItemListener(this);
+        n2.addItemListener(this);
+        n3.addItemListener(this);
         n.add(nLabel);
         n.add(n1);
         n.add(n2);
@@ -81,6 +88,33 @@ public class InputPanel extends JPanel {
         this.add(shellPanel);
         
         
+    }
+    
+    @Override
+    public void itemStateChanged(ItemEvent e) {
+        Object source = e.getItem();
+        boolean selected = (e.getStateChange() == ItemEvent.SELECTED? true : false);
+            if(source == n1)
+                rp.setNShellSelected(selected, RadialPanel.N1);   
+            else if(source == n2)
+                rp.setNShellSelected(selected, RadialPanel.N2);  
+            else if(source == n3)
+                rp.setNShellSelected(selected, RadialPanel.N3);    
+            else{
+                int id = -1;
+                for(int i = 0; i<checkBoxes.length; i++){
+                    if(source.equals(checkBoxes[i])){
+                        id = i;
+                        break;
+                    }  
+                }
+                if(id == 0)
+                    rp.setSubShellSelected(selected, 0);
+                else if(id<4)
+                    rp.setSubShellSelected(selected, 1);
+                else
+                    rp.setSubShellSelected(selected, 2);
+            }
     }
     
 }
