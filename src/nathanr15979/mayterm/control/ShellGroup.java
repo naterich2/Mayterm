@@ -27,55 +27,69 @@ public class ShellGroup extends Group {
     private static final double phiChange = Math.PI/30.0;
     private static final double thetaChange = Math.PI/15.0;
     
-    private Group current;
-    private Group [] shellGroups;
+    private Group sShell, p1Shell, p2Shell, p3Shell, d1Shell, d2Shell, d3Shell, d4Shell, d5Shell;
     
-    private Wave wave;
-    
-    public ShellGroup(Wave wave){
+    public ShellGroup(){
         super();
-        this.wave = wave;
-        current = new Group();
-        this.getChildren().add(current);
+        sShell = sShell();
     }
     
     public void setSelected(boolean selected, int shell){
+        
         switch(shell){
             case 0:
-                current = shellGroups[0];
-                update();
+                if(selected)
+                    getChildren().add(sShell);
+                else
+                    getChildren().remove(sShell);
                 break;
             case 1:
-                current = shellGroups[1];
-                update();
+                if(selected)
+                    getChildren().add(p1Shell);
+                else
+                    getChildren().remove(p1Shell);
                 break;
             case 2:
-                current = shellGroups[2];
-                update();
+                if(selected)
+                    getChildren().add(p2Shell);
+                else
+                    getChildren().remove(p2Shell);
                 break;
             case 3:  
-                current = shellGroups[3];
-                update();
+                if(selected)
+                    getChildren().add(p3Shell);
+                else
+                    getChildren().remove(p3Shell);
                 break;
             case 4:
-                current = shellGroups[4];
-                update();
+                if(selected)
+                    getChildren().add(d1Shell);
+                else
+                    getChildren().remove(d1Shell);
                 break;
             case 5:  
-                current = shellGroups[5];
-                update();
+                if(selected)
+                    getChildren().add(d2Shell);
+                else
+                    getChildren().remove(d2Shell);
                 break;
             case 6:
-                current = shellGroups[6];
-                update();
+                if(selected)
+                    getChildren().add(d3Shell);
+                else
+                    getChildren().remove(d3Shell);
                 break;
             case 7:
-                current = shellGroups[7];
-                update();
+                if(selected)
+                    getChildren().add(d4Shell);
+                else
+                    getChildren().remove(d4Shell);
                 break;
             case 8:
-                current = shellGroups[8];
-                update();
+                if(selected)
+                    getChildren().add(d5Shell);
+                else
+                    getChildren().remove(d5Shell);
                 break;
         }
     }
@@ -85,7 +99,7 @@ public class ShellGroup extends Group {
         double phi = 0;
         while(theta<=2*Math.PI){
             while(phi<=Math.PI){
-                double rho = wave.waveEquation(0,0,theta,phi);
+                double rho = Wave.waveEquation(0,0,theta,phi);
                 Point point = new Point(Util.toCartesian(rho, theta, phi));
                 sGroup.getChildren().add(point);
                 phi+=phiChange;
@@ -95,11 +109,7 @@ public class ShellGroup extends Group {
         return sGroup;
     }
     
-    private void update(){
-        getChildren().clear();
-        getChildren().add(current);
-    }
-    
+
     class Point extends Group{
         public Point(double[] coords){
             Box box = new Box(1,1,1);

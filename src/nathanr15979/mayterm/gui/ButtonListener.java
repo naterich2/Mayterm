@@ -10,26 +10,31 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
+import nathanr15979.mayterm.control.ShellGroup;
 /**
  *
  * @author nathan richman
  */
 public class ButtonListener implements ItemListener, ActionListener {
-    InputPanel inputPanel;
-    public ButtonListener(InputPanel my){
+    private InputPanel inputPanel;
+    private ShellGroup sg;
+    public ButtonListener(InputPanel my, ShellGroup sg){
         inputPanel = my;
+        this.sg = sg;
     }
     @Override
     public void itemStateChanged(ItemEvent e) {
         Object source = e.getItem();
         int id = -1;
         for(int i = 0; i<inputPanel.checkBoxes.length; i++)
-            if(inputPanel.checkBoxes[i].equals(source))
+            if(inputPanel.checkBoxes[i].equals(source)){
                 id = i;
-        /*(if(e.getStateChange() == ItemEvent.DESELECTED)
-            waveGroup.selected(false, InputPanel.ORBITALS[id]);
+                break;
+            }    
+        if(e.getStateChange() == ItemEvent.DESELECTED)
+            sg.setSelected(false, InputPanel.ORBITALS[id]);
         else
-            waveGroup.selected(true, InputPanel.ORBITALS[id]);*/
+            sg.setSelected(true, InputPanel.ORBITALS[id]);
     }
     @Override
     public void actionPerformed(ActionEvent e){

@@ -7,6 +7,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 
+import nathanr15979.mayterm.control.ShellGroup;
 
 /**
  *
@@ -14,7 +15,9 @@ import javax.swing.JLabel;
  */
 public class InputPanel extends JPanel {
     public JCheckBox [] checkBoxes;
-    public static final String [] ORBITALS = {"s","p1","p2","p3","d1","d2","d3","d4","d5"};
+    public static final int [] ORBITALS = {ShellGroup.S,ShellGroup.P1,ShellGroup.P2,ShellGroup.P3,
+                                           ShellGroup.D1,ShellGroup.D2,ShellGroup.D3,ShellGroup.D4, ShellGroup.D5};
+    private ShellGroup sg;
     private JPanel s;
     private JPanel p;
     private JPanel d;
@@ -28,8 +31,9 @@ public class InputPanel extends JPanel {
     private JCheckBox n3;
     private JLabel nLabel;
     
-    public InputPanel(){
+    public InputPanel(ShellGroup sg){
         super();
+        this.sg = sg;
         this.setLayout(new FlowLayout());
         shellPanel = new JPanel();
         shellPanel.setLayout(new GridLayout(3,1));
@@ -40,7 +44,7 @@ public class InputPanel extends JPanel {
         for(int i = 0; i<orbitalOrientations.length; i++){
             checkBoxes[i] = new JCheckBox();
             checkBoxes[i].setToolTipText("Turn on "+orbitalOrientations[i]+" orbital");
-            checkBoxes[i].addItemListener(new ButtonListener(this)); 
+            checkBoxes[i].addItemListener(new ButtonListener(this,sg)); 
         } 
         s = new JPanel(new FlowLayout(FlowLayout.LEADING));
         p = new JPanel(new FlowLayout(FlowLayout.LEADING));
