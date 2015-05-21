@@ -7,6 +7,9 @@ package nathanr15979.mayterm.control;
 
 import javafx.scene.Group;
 import javafx.scene.shape.Box;
+import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Scale;
+import javafx.scene.transform.Translate;
 
 /**
  *
@@ -29,8 +32,25 @@ public class ShellGroup extends Group {
     
     private Group sShell, p1Shell, p2Shell, p3Shell, d1Shell, d2Shell, d3Shell, d4Shell, d5Shell;
     
+    public Translate t;
+    public Scale s;
+    public Rotate rx;
+    public Rotate ry;
+    public Rotate rz;
+    
     public ShellGroup(){
         super();
+        t = new Translate();
+        s = new Scale();
+        rx = new Rotate();
+        rx.setAxis(Rotate.X_AXIS);
+        ry = new Rotate();
+        ry.setAxis(Rotate.Y_AXIS);
+        rz = new Rotate();
+        rz.setAxis(Rotate.Z_AXIS);
+        
+        getTransforms().addAll(t,s,rx,ry,rz);
+        
         sShell = sShell();
     }
     

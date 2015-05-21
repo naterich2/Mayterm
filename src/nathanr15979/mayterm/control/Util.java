@@ -5,12 +5,9 @@
  */
 package nathanr15979.mayterm.control;
 
-import java.awt.AlphaComposite;
 import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.awt.image.BufferedImage;
 import java.awt.image.FilteredImageSource;
 import java.awt.image.ImageFilter;
 import java.awt.image.ImageProducer;
@@ -35,6 +32,7 @@ public class Util {
         values[2] = rho*Math.cos(phi);
         return values;
     } 
+    
     public static Image makeColorTransparent(Image im, final Color color) {
         ImageFilter filter = new RGBImageFilter() {
             // the color we are looking for... Alpha bits are set to opaque
