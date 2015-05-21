@@ -94,27 +94,27 @@ public class InputPanel extends JPanel implements ItemListener {
     public void itemStateChanged(ItemEvent e) {
         Object source = e.getItem();
         boolean selected = (e.getStateChange() == ItemEvent.SELECTED? true : false);
-            if(source == n1)
-                rp.setNShellSelected(selected, RadialPanel.N1);   
-            else if(source == n2)
-                rp.setNShellSelected(selected, RadialPanel.N2);  
-            else if(source == n3)
-                rp.setNShellSelected(selected, RadialPanel.N3);    
-            else{
-                int id = -1;
-                for(int i = 0; i<checkBoxes.length; i++){
-                    if(source.equals(checkBoxes[i])){
-                        id = i;
-                        break;
-                    }  
-                }
-                if(id == 0)
-                    rp.setSubShellSelected(selected, 0);
-                else if(id<4)
-                    rp.setSubShellSelected(selected, 1);
-                else
-                    rp.setSubShellSelected(selected, 2);
+        if(source == n1)
+            rp.setNShellSelected(selected, RadialPanel.N1);   
+        else if(source == n2)
+            rp.setNShellSelected(selected, RadialPanel.N2);  
+        else if(source == n3)
+            rp.setNShellSelected(selected, RadialPanel.N3);    
+        else{
+            int id = -1;
+            for(int i = 0; i<checkBoxes.length; i++){
+                if(source.equals(checkBoxes[i])){
+                    id = i;
+                    break;
+                }  
             }
+            if(id == 0)
+                rp.setSubShellSelected(selected, 0);
+            else if(id<4)
+                rp.setSubShellSelected(selected, 1);
+            else
+                rp.setSubShellSelected(selected, 2);
+        }
     }
     
 }
