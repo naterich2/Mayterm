@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 
+import javafx.application.Platform;
 import nathanr15979.mayterm.gui.MainView;
 /**
  *
@@ -11,6 +12,7 @@ import nathanr15979.mayterm.gui.MainView;
  */
 public class main {
     public static void main(String [] args){
-        new Thread(new MainView()).start();
+         MainView mainview = new MainView();
+        Platform.runLater(mainview);
     }
 }

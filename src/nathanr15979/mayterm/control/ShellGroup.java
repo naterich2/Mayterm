@@ -29,14 +29,16 @@ public class ShellGroup extends Group {
     
     private static final double phiChange = Math.PI/30.0;
     private static final double thetaChange = Math.PI/15.0;
+    private static final int AXIS_LENGTH = 100;
     
     private Group sShell, p1Shell, p2Shell, p3Shell, d1Shell, d2Shell, d3Shell, d4Shell, d5Shell;
-    
+    Sphere sphere = new Sphere("kjhsdf");
     public Translate t;
     public Scale s;
     public Rotate rx;
     public Rotate ry;
     public Rotate rz;
+    private Box xAxis, yAxis,zAxis;
     
     public ShellGroup(){
         super();
@@ -51,7 +53,11 @@ public class ShellGroup extends Group {
         
         getTransforms().addAll(t,s,rx,ry,rz);
         
-        sShell = sShell();
+        sShell = shell(0,0);
+        p1Shell = shell(1,-1);
+        p2Shell = shell(1,0);
+       // p3Shell, d1Shell, d2Shell, d3Shell, d4Shell, d5Shell
+        
     }
     
     public void setSelected(boolean selected, int shell){
@@ -113,20 +119,20 @@ public class ShellGroup extends Group {
                 break;
         }
     }
-    private Group sShell(){
-        Group sGroup = new Group();
+    private Group shell(int l, int m){
+        Group group = new Group();
         double theta = 0;
         double phi = 0;
         while(theta<=2*Math.PI){
             while(phi<=Math.PI){
-                double rho = Wave.waveEquation(0,0,theta,phi);
+                double rho = Wave.waveEquation(l,m,theta,phi);
                 Point point = new Point(Util.toCartesian(rho, theta, phi));
-                sGroup.getChildren().add(point);
+                group.getChildren().add(point);
                 phi+=phiChange;
             }
             theta+=thetaChange;
         }
-        return sGroup;
+        return group;
     }
     
 

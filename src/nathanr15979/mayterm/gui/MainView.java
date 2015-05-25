@@ -6,7 +6,9 @@
 package nathanr15979.mayterm.gui;
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import nathanr15979.mayterm.control.ShellGroup;
 
@@ -19,6 +21,7 @@ public class MainView extends JFrame implements Runnable {
     private GraphPanel graphPanel;
     private ShellGroup sg;
     private RadialPanel rp;
+    JPanel nonInput;
     
     @Override
     public void run(){
@@ -31,10 +34,14 @@ public class MainView extends JFrame implements Runnable {
         rp = new RadialPanel();
         inputPanel = new InputPanel(sg, rp);
         graphPanel = new GraphPanel();
+        nonInput = new JPanel();
+        nonInput.setLayout(new FlowLayout());
+        nonInput.add(graphPanel);
+        nonInput.add(rp);
         this.setLayout(new BorderLayout());
         //add(graphPanel, BorderLayout.CENTER);
         add(inputPanel, BorderLayout.SOUTH);
-        add(rp, BorderLayout.CENTER);
+        add(nonInput, BorderLayout.CENTER);
         //this.setResizable(false);
         
     }
