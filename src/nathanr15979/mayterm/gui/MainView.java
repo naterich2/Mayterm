@@ -7,6 +7,7 @@ package nathanr15979.mayterm.gui;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
+import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -31,6 +32,7 @@ public class MainView extends Application {
     private double mouseY;
     private double deltaX;
     private double deltaY;
+    private PerspectiveCamera cam; 
     
     
     public MainView(){
@@ -38,37 +40,53 @@ public class MainView extends Application {
        sg = new ShellGroup();
        rp = new RadialPanel();
        ip = new InputPanel(sg, rp);
-       
+      // cam = new PerspectiveCamera();
+       //cam.setFieldOfView(40);
        myScene = new Scene(new BorderPane(), 1000, 800, true);
+      // myScene.setCamera(cam);
        
-       myScene.setOnMouseClicked(new EventHandler<MouseEvent>() {
+       myScene.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
-            public void handle(MouseEvent event){
-                oldMouseX = event.getX();
-                oldMouseY = event.getY();
+            public void handle(MouseEvent me) {
+                mouseX = me.getX();
+                mouseY = me.getY();
+                oldMouseX = me.getX();
+                oldMouseY = me.getY();
+                //System.out.println("scene.setOnMousePressed " + me);
             }
         });
-       myScene.setOnMouseDragged(new EventHandler<MouseEvent>(){
+        myScene.setOnMouseDragged(new EventHandler<MouseEvent>() {
             @Override
-            public void handle(MouseEvent e){
-                mouseX = e.getX();
-                mouseY = e.getY();
-                deltaX = mouseX-oldMouseX;
-                deltaY = mouseY-oldMouseY;
-                if(e.isShiftDown()){
+            public void handle(MouseEvent me) {
+                oldMouseX = mouseX;
+                oldMouseY = mouseY;
+                mouseX = me.getX();
+                mouseY = me.getY();
+                deltaX = mouseX - oldMouseX;
+                deltaY = mouseY - oldMouseY;
+                if (me.isShiftDown() && me.isPrimaryButtonDown()) {
+                    double rzAngle = sg.rz.getAngle();
+                    sg.rz.setAngle(rzAngle - deltaX);
+                }
+                else if (me.isPrimaryButtonDown()) {
+                    double ryAngle = sg.ry.getAngle();
+                    sg.ry.setAngle(ryAngle - deltaX);
+                    double rxAngle = sg.rx.getAngle();
+                    sg.rx.setAngle(rxAngle + deltaY);
+                }
+                else if (me.isControlDown() && me.isPrimaryButtonDown()) {
                     double scale = sg.s.getX();
-                    double newScale = scale + deltaY*.01;
+                    double newScale = scale + deltaX*0.01;
                     sg.s.setX(newScale);
                     sg.s.setY(newScale);
                     sg.s.setZ(newScale);
-                } else if(e.isControlDown()){
+                }
+                else if (me.isAltDown() && me.isPrimaryButtonDown()) {
                     double tx = sg.t.getX();
                     double ty = sg.t.getY();
                     sg.t.setX(tx + deltaX);
                     sg.t.setY(ty + deltaY);
-                } else {
-                    
-                }
+                }                
             }
         });
        
@@ -85,5 +103,8 @@ public class MainView extends Application {
         st.setScene(myScene);
         st.setTitle("Orbital Viewer");
         st.show();
+    }
+    public static void main(String [] args){
+        launch(args);
     }
 }

@@ -6,6 +6,8 @@
 package nathanr15979.mayterm.control;
 
 import javafx.scene.Group;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Scale;
@@ -29,7 +31,7 @@ public class ShellGroup extends Group {
     
     private static final double phiChange = Math.PI/30.0;
     private static final double thetaChange = Math.PI/15.0;
-    private static final int AXIS_LENGTH = 100;
+    private static final int AXIS_LENGTH = 1000;
     
     private Group sShell, p1Shell, p2Shell, p3Shell, d1Shell, d2Shell, d3Shell, d4Shell, d5Shell;
     public Translate t;
@@ -59,8 +61,33 @@ public class ShellGroup extends Group {
        xAxis = new Box(AXIS_LENGTH,1,1);
        yAxis = new Box(1,AXIS_LENGTH,1);
        zAxis = new Box(1,1,AXIS_LENGTH);
-       
+       xAxis.setMaterial(new PhongMaterial(Color.RED));
+       yAxis.setMaterial(new PhongMaterial(Color.BLUE));
+
+       zAxis.setMaterial(new PhongMaterial(Color.GREEN));
+
+       getChildren().addAll(xAxis, yAxis, zAxis);
+       rx.setAngle(45);
+        ry.setAngle(45);
+        rz.setAngle(45);
+        s.setX(2);
+        s.setY(2);
+        s.setZ(2);
+       getChildren().add(sShell);
     }
+    
+    public void reset(){
+        t.setX(1);
+        t.setY(1);
+        t.setZ(1);
+        s.setX(1);
+        s.setY(1);
+        s.setZ(1);
+        rx.setAngle(45);
+        ry.setAngle(45);
+        rz.setAngle(45);
+    }
+    
     
     public void setSelected(boolean selected, int shell){
         
@@ -128,8 +155,10 @@ public class ShellGroup extends Group {
         while(theta<=2*Math.PI){
             while(phi<=Math.PI){
                 double rho = Wave.waveEquation(l,m,theta,phi);
+                //System.out.println(rho);
                 Point point = new Point(Util.toCartesian(rho, theta, phi));
                 group.getChildren().add(point);
+                //System.out.println(point);
                 phi+=phiChange;
             }
             theta+=thetaChange;
@@ -139,13 +168,22 @@ public class ShellGroup extends Group {
     
 
     class Point extends Group{
+        double x;
+        double y;
+        double z;
         public Point(double[] coords){
+            x = coords[0];
+            y = coords[1];
+            z = coords[2];
             Box box = new Box(1,1,1);
+            box.setMaterial(new PhongMaterial(Color.BLACK));
             getChildren().add(box);
-            
             setTranslateX(coords[0]);
             setTranslateY(coords[1]);
             setTranslateZ(coords[2]);
+        }
+        public String toString(){
+            return "x: "+x+" y: "+y+" z: "+z;
         }
     }
 }

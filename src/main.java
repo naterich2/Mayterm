@@ -11,7 +11,7 @@ import nathanr15979.mayterm.gui.MainView;
  * @author nathan richman
  */
 public class main {
-    public static void main(String [] args){
-         Application.launch(new MainView(), args);
-    }
+  //  public static void main(String [] args){
+   //      Application.launch(new MainView(), args);
+   // }
 }

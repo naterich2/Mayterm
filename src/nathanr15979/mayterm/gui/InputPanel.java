@@ -2,6 +2,9 @@ package nathanr15979.mayterm.gui;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
@@ -34,6 +37,7 @@ public class InputPanel extends FlowPane  {
     public final CheckBox n3;
     private final Label nLabel;
     private int i = 0;
+    private Button reset;
     
     public InputPanel(ShellGroup sg, RadialPanel radial){
         super();
@@ -112,8 +116,17 @@ public class InputPanel extends FlowPane  {
         n.getChildren().add(n1);
         n.getChildren().add(n2);
         n.getChildren().add(n3);
+        reset = new Button("reset");
+        reset.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent e){
+                sg.reset();
+                System.out.println("reset");
+            }
+        });
         this.getChildren().add(n);
         this.getChildren().add(shellPanel);
+        getChildren().add(reset);
         
         
     }

@@ -24,10 +24,13 @@ public class Wave {
 		if(m>0|| m<0){
 			double firstQuotient = (2*l+1)/Math.PI;
 			double secondQuotient = factorial(l - Math.abs(m))/factorial(l + Math.abs(m));
+                        System.out.println(Math.sqrt(firstQuotient*secondQuotient));
 			return Math.sqrt(2)*Math.sqrt(firstQuotient*secondQuotient);
+                      
 		} else{
 			double firstQuotient = (2*l+1)/Math.PI;
 			double secondQuotient = factorial(l)/factorial(l);
+                        System.out.println(Math.sqrt(firstQuotient*secondQuotient));
 			return Math.sqrt(firstQuotient*secondQuotient);
 		}
 	}
@@ -42,6 +45,7 @@ public class Wave {
 		} else {
 			part = ((Math.cos(phi)*(2*l-1))/(l-m))*legendre(l-1,m,theta,phi)-((l+m-1)/(l-m))*legendre(l-2,m,theta,phi);
 		}
+            System.out.println(part);
             return part;
 	}
 

@@ -57,12 +57,12 @@ public class RadialPanel extends Group {
         p3 = Util.makeColorTransparent(p3, Color.WHITE);
         d3 = Util.makeColorTransparent(d3, Color.WHITE);
         
-        s1fx = SwingFXUtils.toFXImage((BufferedImage) s1, s1fx);
+        /*s1fx = SwingFXUtils.toFXImage((BufferedImage) s1, s1fx);
         s2fx = SwingFXUtils.toFXImage((BufferedImage) s2, s2fx);
-        p2fx = SwingFXUtils.toFXImage((BufferedImage) p2, p2fx);
+          p2fx = SwingFXUtils.toFXImage((BufferedImage) p2, p2fx);
         s3fx = SwingFXUtils.toFXImage((BufferedImage) s3, s3fx);
         p3fx = SwingFXUtils.toFXImage((BufferedImage) p3, p3fx);
-        d3fx = SwingFXUtils.toFXImage((BufferedImage) d3, d3fx);
+        d3fx = SwingFXUtils.toFXImage((BufferedImage) d3, d3fx);*/
         
         //this.add(new JButton("hello"));
     }
@@ -70,7 +70,7 @@ public class RadialPanel extends Group {
     private void repaint(){
         getChildren().clear();
         for(WritableImage i: drawn){
-            getChildren().add(new ImageView(i));
+         //   getChildren().add(new ImageView(i));
         }
     }
     
