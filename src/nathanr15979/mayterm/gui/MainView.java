@@ -34,6 +34,7 @@ public class MainView extends Application {
     
     
     public MainView(){
+       super();
        sg = new ShellGroup();
        rp = new RadialPanel();
        ip = new InputPanel(sg, rp);

@@ -32,7 +32,6 @@ public class ShellGroup extends Group {
     private static final int AXIS_LENGTH = 100;
     
     private Group sShell, p1Shell, p2Shell, p3Shell, d1Shell, d2Shell, d3Shell, d4Shell, d5Shell;
-    Sphere sphere = new Sphere("kjhsdf");
     public Translate t;
     public Scale s;
     public Rotate rx;
@@ -57,7 +56,10 @@ public class ShellGroup extends Group {
         p1Shell = shell(1,-1);
         p2Shell = shell(1,0);
        // p3Shell, d1Shell, d2Shell, d3Shell, d4Shell, d5Shell
-        
+       xAxis = new Box(AXIS_LENGTH,1,1);
+       yAxis = new Box(1,AXIS_LENGTH,1);
+       zAxis = new Box(1,1,AXIS_LENGTH);
+       
     }
     
     public void setSelected(boolean selected, int shell){
