@@ -6,14 +6,17 @@
 package nathanr15979.mayterm.gui;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 //import java.awt.Image;
 import java.io.IOException;
 import java.util.ArrayList;
+import javafx.scene.Group;
+import javafx.scene.image.ImageView;
 import javax.imageio.ImageIO;
-import javax.swing.JPanel;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.WritableImage;
 
 import nathanr15979.mayterm.control.Util;
 
@@ -21,7 +24,7 @@ import nathanr15979.mayterm.control.Util;
  *
  * @author nathan richman
  */
-public class RadialPanel extends JPanel {
+public class RadialPanel extends Group {
     public static final int N1 = 0;
     public static final int N2 = 1;
     public static final int N3 = 2;
@@ -30,7 +33,9 @@ public class RadialPanel extends JPanel {
     private boolean[] nShell = {false, false, false};
     private boolean[] subShell = {false, false, false};
     private Image s1, s2, p2, s3, p3, d3;
-    private ArrayList<Image> drawn;
+    private ArrayList<WritableImage> drawn;
+    WritableImage s1fx, s2fx, p2fx, s3fx, p3fx, d3fx;
+   
     
     public RadialPanel(){
         super();
@@ -44,7 +49,7 @@ public class RadialPanel extends JPanel {
         } catch(IOException e){
             
         }
-        drawn = new ArrayList<Image>();
+        drawn = new ArrayList<WritableImage>();
         s1 = Util.makeColorTransparent(s1, Color.WHITE);
         s2 = Util.makeColorTransparent(s2, Color.WHITE);
         p2 = Util.makeColorTransparent(p2, Color.WHITE);
@@ -52,17 +57,22 @@ public class RadialPanel extends JPanel {
         p3 = Util.makeColorTransparent(p3, Color.WHITE);
         d3 = Util.makeColorTransparent(d3, Color.WHITE);
         
-        this.setBackground(Color.WHITE);
+        s1fx = SwingFXUtils.toFXImage((BufferedImage) s1, s1fx);
+        s2fx = SwingFXUtils.toFXImage((BufferedImage) s2, s2fx);
+        p2fx = SwingFXUtils.toFXImage((BufferedImage) p2, p2fx);
+        s3fx = SwingFXUtils.toFXImage((BufferedImage) s3, s3fx);
+        p3fx = SwingFXUtils.toFXImage((BufferedImage) p3, p3fx);
+        d3fx = SwingFXUtils.toFXImage((BufferedImage) d3, d3fx);
+        
         //this.add(new JButton("hello"));
     }
-    @Override
-    public void paintComponent(Graphics g){
-        super.paintComponent(g);
-        drawn.stream().forEach((drawn1) -> {
-            g.drawImage(drawn1, 0, 0, null);
-        });
-    }
     
+    private void repaint(){
+        getChildren().clear();
+        for(WritableImage i: drawn){
+            getChildren().add(new ImageView(i));
+        }
+    }
     
     public void setNShellSelected(boolean selected, int n){
         nShell[n] = selected;
@@ -75,87 +85,87 @@ public class RadialPanel extends JPanel {
     private void updateShells(){
         if(nShell[0]){
             if(subShell[0]){
-                drawn.add(s1);
+                drawn.add(s1fx);
                 repaint();
             } else
-                if(drawn.contains(s1)){
-                    drawn.remove(s1);
+                if(drawn.contains(s1fx)){
+                    drawn.remove(s1fx);
                     repaint();
                 }    
         } else {
-            if(drawn.contains(s1)){
-                drawn.remove(s1);
+            if(drawn.contains(s1fx)){
+                drawn.remove(s1fx);
                 repaint();
             }
         }
         if(nShell[1]){
             if(subShell[0]){
-                drawn.add(s2);
+                drawn.add(s2fx);
                 repaint();
             }    
             else
-                if(drawn.contains(s2)){
-                    drawn.remove(s2);
+                if(drawn.contains(s2fx)){
+                    drawn.remove(s2fx);
                     repaint();
                 }    
             if(subShell[1]){
-                drawn.add(p2);
+                drawn.add(p2fx);
                 repaint();
             }    
             else
-                if(drawn.contains(p2)){
-                    drawn.remove(p2);
+                if(drawn.contains(p2fx)){
+                    drawn.remove(p2fx);
                     repaint();
                 }    
         } else{
-            if(drawn.contains(s2)){
-                drawn.remove(s2);
+            if(drawn.contains(s2fx)){
+                drawn.remove(s2fx);
                 repaint();
             }    
-            if(drawn.contains(p2)){
-                drawn.remove(p2);
+            if(drawn.contains(p2fx)){
+                drawn.remove(p2fx);
                 repaint();
             }   
         }
         if(nShell[2]){
             if(subShell[0]){
-                drawn.add(s3);
+                drawn.add(s3fx);
                 repaint();
             }    
             else
-                if(drawn.contains(s3)){
-                    drawn.remove(s3);
+                if(drawn.contains(s3fx)){
+                    drawn.remove(s3fx);
                     repaint();
                 }    
             if(subShell[1]){
-                drawn.add(p3);
+                drawn.add(p3fx);
                 repaint();
             }    
             else
-                if(drawn.contains(p3)){
-                    drawn.remove(p3);
+                if(drawn.contains(p3fx)){
+                    drawn.remove(p3fx);
                     repaint();
                 }    
             if(subShell[2]){
-                drawn.add(d3);
+                drawn.add(d3fx);
                 repaint();
             }    
             else
-                if(drawn.contains(d3)){
-                    drawn.remove(d3);
+                if(drawn.contains(d3fx)){
+                    drawn.remove(d3fx);
                     repaint();
                 }    
         } else {
-            if(drawn.contains(s3)){
-                drawn.remove(s3);
+            if(drawn.contains(s3fx)){
+                drawn.remove(s3fx);
                 repaint();
             }    
-            if(drawn.contains(p3)){
-                drawn.remove(p3);
+            if(drawn.contains(p3fx)){
+                drawn.remove(p3fx);
                 repaint();
             }    
-            if(drawn.contains(d3)){
-                drawn.remove(d3);
+            if(drawn.contains(d3fx)){
+                drawn.remove(d3fx);
                 repaint();
             }    
         }

@@ -1,12 +1,12 @@
 package nathanr15979.mayterm.gui;
 
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import javax.swing.JCheckBox;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.VBox;
 
 
 import nathanr15979.mayterm.control.ShellGroup;
@@ -15,106 +15,108 @@ import nathanr15979.mayterm.control.ShellGroup;
  *
  * @author nathan richman
  */
-public class InputPanel extends JPanel implements ItemListener {
-    public JCheckBox [] checkBoxes;
+public class InputPanel extends FlowPane  {
+    public CheckBox [] checkBoxes;
     public static final int [] ORBITALS = {ShellGroup.S,ShellGroup.P1,ShellGroup.P2,ShellGroup.P3,
                                            ShellGroup.D1,ShellGroup.D2,ShellGroup.D3,ShellGroup.D4, ShellGroup.D5};
     private final ShellGroup sg;
     private final RadialPanel rp;
-    private final JPanel s;
-    private final JPanel p;
-    private final JPanel d;
-    private final JLabel sl;
-    private final JLabel pl;
-    private final JLabel dl;
-    private final JPanel shellPanel;
-    private final JPanel n;
-    public final JCheckBox n1;
-    public final JCheckBox n2;
-    public final JCheckBox n3;
-    private final JLabel nLabel;
+    private final FlowPane s;
+    private final FlowPane p;
+    private final FlowPane d;
+    private final Label sl;
+    private final Label pl;
+    private final Label dl;
+    private final VBox shellPanel;
+    private final VBox n;
+    public final CheckBox n1;
+    public final CheckBox n2;
+    public final CheckBox n3;
+    private final Label nLabel;
+    private int i = 0;
     
     public InputPanel(ShellGroup sg, RadialPanel radial){
         super();
         this.sg = sg;
         rp = radial;
-        this.setLayout(new FlowLayout());
-        shellPanel = new JPanel();
-        shellPanel.setLayout(new GridLayout(3,1));
+        shellPanel = new VBox();
         //this.setMinimumSize(new Dimension(150,80));
 
         String [] orbitalOrientations = {"s","px","py","pz","dxy","dyz","dz2","dxz","dxy2"};
-        checkBoxes = new JCheckBox[orbitalOrientations.length];
-        for(int i = 0; i<orbitalOrientations.length; i++){
-            checkBoxes[i] = new JCheckBox();
-            checkBoxes[i].setToolTipText("Turn on "+orbitalOrientations[i]+" orbital");
-            checkBoxes[i].addItemListener(this); 
+        checkBoxes = new CheckBox[orbitalOrientations.length];
+        i = 0;
+        while(i<orbitalOrientations.length){
+            
+            checkBoxes[i] = new CheckBox();
+            checkBoxes[i].setTooltip(new Tooltip("Turn on "+orbitalOrientations[i]+" orbital"));
+            checkBoxes[i].selectedProperty().addListener(new ChangeListener<Boolean>(){
+                @Override
+                public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                    sg.setSelected(newValue, ORBITALS[i]);
+                    if(i == 0)
+                        rp.setSubShellSelected(newValue, 0);
+                    else if(i<4)
+                        rp.setSubShellSelected(newValue, 1);
+                    else
+                        rp.setSubShellSelected(newValue, 2);   
+                }
+            }); 
+            i++;
         } 
-        s = new JPanel(new FlowLayout(FlowLayout.LEADING));
-        p = new JPanel(new FlowLayout(FlowLayout.LEADING));
-        d = new JPanel(new FlowLayout(FlowLayout.LEADING));
-        sl = new JLabel("s: ");
-        s.add(sl);
-        s.add(checkBoxes[0]);
-        pl = new JLabel("p: ");
-        p.add(pl);
-        p.add(checkBoxes[1]);
-        p.add(checkBoxes[2]);
-        p.add(checkBoxes[3]);
-        dl = new JLabel("d: ");
-        d.add(dl);
-        d.add(checkBoxes[4]);
-        d.add(checkBoxes[5]);
-        d.add(checkBoxes[6]);
-        d.add(checkBoxes[7]);
-        d.add(checkBoxes[8]);
-        shellPanel.add(s);
-        shellPanel.add(p);
-        shellPanel.add(d);
+        s = new FlowPane();
+        p = new FlowPane();
+        d = new FlowPane();
+        sl = new Label("s: ");
+        s.getChildren().add(sl);
+        s.getChildren().add(checkBoxes[0]);
+        pl = new Label("p: ");
+        p.getChildren().add(pl);
+        p.getChildren().add(checkBoxes[1]);
+        p.getChildren().add(checkBoxes[2]);
+        p.getChildren().add(checkBoxes[3]);
+        dl = new Label("d: ");
+        d.getChildren().add(dl);
+        d.getChildren().add(checkBoxes[4]);
+        d.getChildren().add(checkBoxes[5]);
+        d.getChildren().add(checkBoxes[6]);
+        d.getChildren().add(checkBoxes[7]);
+        d.getChildren().add(checkBoxes[8]);
+        shellPanel.getChildren().add(s);
+        shellPanel.getChildren().add(p);
+        shellPanel.getChildren().add(d);
         
-        n = new JPanel(new GridLayout(4,1));
-        nLabel = new JLabel("n: ");
-        n1 = new JCheckBox("1: ");
-        n2 = new JCheckBox("2: ");
-        n3 = new JCheckBox("3: ");
-        n1.addItemListener(this);
-        n2.addItemListener(this);
-        n3.addItemListener(this);
-        n.add(nLabel);
-        n.add(n1);
-        n.add(n2);
-        n.add(n3);
-        this.add(n);
-        this.add(shellPanel);
-        
-        
-    }
-    
-    @Override
-    public void itemStateChanged(ItemEvent e) {
-        Object source = e.getItem();
-        boolean selected = (e.getStateChange() == ItemEvent.SELECTED? true : false);
-        if(source == n1)
-            rp.setNShellSelected(selected, RadialPanel.N1);   
-        else if(source == n2)
-            rp.setNShellSelected(selected, RadialPanel.N2);  
-        else if(source == n3)
-            rp.setNShellSelected(selected, RadialPanel.N3);    
-        else{
-            int id = -1;
-            for(int i = 0; i<checkBoxes.length; i++){
-                if(source.equals(checkBoxes[i])){
-                    id = i;
-                    break;
-                }  
+        n = new VBox();
+        nLabel = new Label("n: ");
+        n1 = new CheckBox("1: ");
+        n2 = new CheckBox("2: ");
+        n3 = new CheckBox("3: ");
+        n1.selectedProperty().addListener(new ChangeListener<Boolean>(){
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                rp.setNShellSelected(newValue, RadialPanel.N1);  
             }
-            if(id == 0)
-                rp.setSubShellSelected(selected, 0);
-            else if(id<4)
-                rp.setSubShellSelected(selected, 1);
-            else
-                rp.setSubShellSelected(selected, 2);
-        }
+        });
+        n2.selectedProperty().addListener(new ChangeListener<Boolean>(){
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                rp.setNShellSelected(newValue, RadialPanel.N2);  
+            }
+        });
+        n3.selectedProperty().addListener(new ChangeListener<Boolean>(){
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                rp.setNShellSelected(newValue, RadialPanel.N3);  
+            }
+        });
+        n.getChildren().add(nLabel);
+        n.getChildren().add(n1);
+        n.getChildren().add(n2);
+        n.getChildren().add(n3);
+        this.getChildren().add(n);
+        this.getChildren().add(shellPanel);
+        
+        
     }
+
     
 }
